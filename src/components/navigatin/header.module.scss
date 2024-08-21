@@ -1,0 +1,19 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #1c2120;
+  &__iconContainer {
+    padding-right: 5px;
+  }
+  &__icon {
+    width: 50px;
+    height: 50%;
+    fill: #c4c7c8;
+    padding-right: 5px;
+  }
+
+  &__logo {
+    width: 70px;
+  }
+}

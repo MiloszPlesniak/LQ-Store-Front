@@ -1,0 +1,16 @@
+.baner {
+  background-color: #1c2120;
+  position: relative;
+  margin-bottom: 70px;
+  width: 100%;
+  &__logo {
+    // własność sith może zostać tylko w wersji mobilnej inaczej baner rozciągnie sie na całe tło
+    width: 100%;
+  }
+  &__decLiquid {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    transform: translateY(100%);
+  }
+}

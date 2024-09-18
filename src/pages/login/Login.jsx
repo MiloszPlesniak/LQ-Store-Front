@@ -1,22 +1,24 @@
-import banerLogo from "../../image/tło z logo i lq.png";
-import decorationLiquid from "../../image/glut.png";
-import styles from "./login.module.scss";
-import LoginForm from "../../components/loginForm/LoginForm";
+import Baner from "../../components/Baner/Baner";
+import EntryForm from "../../components/entryForm/EntryForm";
 
 const Login = () => {
-  const { baner, baner__decLiquid,baner__logo } = styles;
-
+  const collectFormData = (e) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const email = form.elements.email.value;
+    const password = form.elements.password.value;
+    const formData = {
+      email,
+      password,
+    };
+    console.log(formData);
+    
+    return formData
+  };
   return (
     <>
-      <section className={baner}>
-        <img src={banerLogo} className={baner__logo} alt="logo"></img>
-        <img
-          src={decorationLiquid}
-          alt="decoration"
-          className={baner__decLiquid}
-        ></img>
-      </section>
-      <LoginForm />
+      <Baner />
+      <EntryForm itsLogin={true} onSubmit={collectFormData} />
     </>
   );
 };

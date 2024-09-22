@@ -11,7 +11,6 @@ const Register = () => {
     const password = form.elements.password.value;
     const phoneNumber = form.elements.phoneNumber.value;
     const formData = { email, password, phoneNumber };
-    console.log(formData);
     dispatch(registerUser(formData));
     return formData;
   };

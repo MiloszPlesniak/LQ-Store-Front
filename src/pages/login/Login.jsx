@@ -1,8 +1,11 @@
+import { useDispatch } from "react-redux";
 import Baner from "../../components/Baner/Baner";
 import EntryForm from "../../components/entryForm/EntryForm";
+import { loginUser } from "../../redux/auth/thunk";
 
 const Login = () => {
-  const collectFormData = (e) => {
+  const dispatch = useDispatch();
+  const loginHandler = (e) => {
     e.preventDefault();
     const form = e.currentTarget;
     const email = form.elements.email.value;
@@ -12,13 +15,13 @@ const Login = () => {
       password,
     };
     console.log(formData);
-    
-    return formData
+    dispatch(loginUser(formData));
+    return formData;
   };
   return (
     <>
       <Baner />
-      <EntryForm itsLogin={true} onSubmit={collectFormData} />
+      <EntryForm itsLogin={true} onSubmit={loginHandler} />
     </>
   );
 };

@@ -4,9 +4,12 @@ import { BiSearchAlt } from "react-icons/bi";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { RiLoginBoxLine } from "react-icons/ri";
 import styles from "./header.module.scss";
+import { useSelector } from "react-redux";
+import { selectIsLoggedIn } from "../../redux/auth/selectors";
 const Header = () => {
-  const isLoggIn = false;
+  const isLoggIn = useSelector(selectIsLoggedIn);
   const navigate = useNavigate();
+
   return (
     <header className={styles.header}>
       <img src={logoSvg} alt="Logo" className={styles.header__logo} />

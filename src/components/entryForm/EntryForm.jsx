@@ -30,12 +30,22 @@ const EntryForm = ({ itsLogin, onSubmit }) => {
         <label className={entryForm__label} htmlFor="email">
           Nazwa Użytkownika
         </label>
-        <input className={entryForm__input} type="email" name="email" />
+        <input
+          defaultValue="miloszp111@interia.pl"
+          className={entryForm__input}
+          type="email"
+          name="email"
+        />
 
         <label htmlFor="password" className={entryForm__label}>
           Hasło
         </label>
-        <input className={entryForm__input} type="password" name="password" />
+        <input
+          defaultValue="575872435"
+          className={entryForm__input}
+          type="password"
+          name="password"
+        />
         {!itsLogin && (
           <>
             <label className={entryForm__label} htmlFor="phoneNumber">

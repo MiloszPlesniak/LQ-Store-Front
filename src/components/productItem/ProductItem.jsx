@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import styles from "./ProductItem.module.scss";
+import { useLocation } from "react-router-dom";
 const ProductItem = ({ item }) => {
   const {
     productItem,
@@ -9,9 +10,11 @@ const ProductItem = ({ item }) => {
     productItem__tastName,
   } = styles;
   // console.log(item);
-  const { brend, imgUrl, tastName } = item;
+  const { _id, brend, imgUrl, tastName } = item;
+  const { pathname } = useLocation();
+
   return (
-    <Link>
+    <Link to={pathname + "/" + _id}>
       <figure className={productItem}>
         <img className={productItem__img} src={imgUrl} alt={tastName} />
         <figcaption className={productItem__textBox}>

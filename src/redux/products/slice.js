@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getProductsList } from "./thunk";
+import { getProduct, getProductsList } from "./thunk";
 
 const initialState = {
   productList: [],
+  product: {},
   isLoading: null,
   error: {},
 };
@@ -22,6 +23,17 @@ export const productsSlice = createSlice({
       .addCase(getProductsList.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.productList = payload.data;
+      })
+      .addCase(getProduct.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.product = payload.data;
+      })
+      .addCase(getProduct.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
+      .addCase(getProduct.pending, (state, { payload }) => {
+        state.isLoading = true;
       });
   },
 });

@@ -1,6 +1,5 @@
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-axios.defaults.baseURL = "http://localhost:3100/api/products/";
 
 export const getProductsList = createAsyncThunk(
   "product/getProductsList",
@@ -15,3 +14,11 @@ export const getProductsList = createAsyncThunk(
     }
   }
 );
+export const getProduct = createAsyncThunk("product/getProduct", async (id) => {
+  try {
+    const url = "http://localhost:3100/api/products/" + id;
+    const product = await axios.get(url); // zapytanie o konkretny produkt
+
+    return product;
+  } catch (error) {}
+});

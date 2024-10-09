@@ -5,7 +5,7 @@ import { useEffect } from "react";
 
 import ProductList from "../../components/productList/ProductList";
 
-const Main = () => {
+const Products = () => {
   const product = {
     url: "https://res.cloudinary.com/dxcklt1ox/image/upload/t_sharped/v1728077452/a_l_shinigami_fdly5z.png",
     companyName: "a&l ultimate",
@@ -17,7 +17,7 @@ const Main = () => {
   useEffect(() => {
     dispatch(getProductsList());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   return (
     <main>
@@ -26,4 +26,4 @@ const Main = () => {
     </main>
   );
 };
-export default Main;
+export default Products;

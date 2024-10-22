@@ -1,52 +1,72 @@
 import { useLocation } from "react-router-dom";
-import { LuShoppingCart } from "react-icons/lu";
-import { ImArrowRight2 } from "react-icons/im";
+import { throttle } from "lodash";
 import styles from "./SingleProduct.module.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { getProduct } from "../../redux/products/thunk";
-import { useEffect, useState } from "react";
-import { selectProduct } from "../../redux/products/selectors";
-import axios from "axios";
-
+import { useEffect, useRef, useState } from "react";
+import { LuShoppingCart } from "react-icons/lu";
+import { FaArrowRight } from "react-icons/fa";
+import { getProduct, getProductsList } from "../../redux/products/thunk";
+import { calculateProduct } from "../../redux/products/thunk";
+import {
+  selectProduct,
+  selectPrice,
+  selectProductList,
+} from "../../redux/products/selectors";
+import RecommendedProducts from "../../components/recommendedProducts/RecommendedProducts";
 const SingleProduct = () => {
-  const [calculatedProduct, setCalculatedProduct] = useState({
-    bottle: 1.4,
-    nicotine: 5,
-    aroma: 3.6,
-    base: 0.04,
-    sum: 9.64,
-  });
-  // const { singleProduct } = styles;
   const { pathname } = useLocation();
   const productId = pathname.replace("/products/", "");
+  const [power, setPower] = useState(12);
+  const [aroma, setAroma] = useState(10);
+  const [rotation, setRotation] = useState(-180);
   const dispatch = useDispatch();
+  const price = useSelector(selectPrice);
   const product = useSelector(selectProduct);
+  const productList = useSelector(selectProductList);
 
-  const calculateProduct = async (product) => {
+  const popularProduct = productList.filter((item) => item.popularity); //filtrujemy produkty, które są popularne
+
+  const onChangehandler = async (e) => {
+    // funkcja, która pobiera dane z formularza i wysyła je do serwera
+    const ingr = {
+      id: productId,
+      size: e.target.form.ml.value,
+      power: e.target.form.power.value,
+      amount: 1,
+      nicotineType: e.target.form.nicotineType.checked ? "zasada" : "sól",
+    };
     try {
-      console.log(product);
-
-      const data = await axios.post(
-        "http://localhost:3100/api/products/calculate",
-        product
-      );
-      const { priceForOneBottle } = data.data.message;
-      setCalculatedProduct(priceForOneBottle);
-      console.log(calculatedProduct);
+      dispatch(calculateProduct(ingr));
     } catch (error) {
-      console.log(error);
+      console.log(error, "d");
     }
   };
-  console.log(product);
-
-  useEffect(() => {
-    dispatch(getProduct(productId));
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
-  const onChangeChandler = (e) => {
-    console.log(e.target.form.amount.value);
+  //definiujemy funkcję throttle, która będzie wywoływać funkcję onChangehandler co 2 sekundy
+  const onChangehandlerThrottled = useRef(throttle(onChangehandler, 2000));
+  //definiujemy funkcję, która będzie wywoływać funkcję onChangehandlerThrottled
+  const onChangehandlerThrottledReff = async (e) => {
+    await onChangehandlerThrottled.current(e);
+    console.log(price);
   };
+  //pobieramy dane produktu z serwera
+  useEffect(() => {
+    dispatch(getProductsList());
+    dispatch(getProduct(productId));
+    dispatch(
+      calculateProduct({
+        id: productId,
+        size: 10,
+        power: 12,
+        amount: 1,
+        nicotineType: "sól",
+      })
+    );
+  }, [dispatch, productId]);
+
+  const toggleRotation = () => {
+    setRotation((prevRotation) => prevRotation + 180);
+  };
+  // dodać obsugę błędów zbyt wysokiej mocy oraz braku składnika-----------------------------------
   const {
     buySection,
     buySection__img,
@@ -59,6 +79,10 @@ const SingleProduct = () => {
     buyForm__priceBox,
     buyForm__btn,
     buyForm__toggle,
+    buyForm__nicType,
+    aboutProduct,
+    aboutProduct__title,
+    aboutProduct__text,
   } = styles;
   return (
     <main>
@@ -72,40 +96,66 @@ const SingleProduct = () => {
         <div>
           <h4 className={buySection__brend}>{product.brend}</h4>
           <h5 className={buySection__tastName}>{product.tastName}</h5>
-          <form onChange={onChangeChandler} className={buyForm}>
+          <form onChange={onChangehandlerThrottledReff} className={buyForm}>
             <label className={buyForm__range} htmlFor="power">
-              Moc (mg) 6
-              <input type="range" name="power" min="0" max="50" />
-              Aromat (%) 10
+              Moc (mg) {power}
               <input
+                onChange={(e) => {
+                  setPower(e.target.value);
+                }}
+                type="range"
+                name="power"
+                min="0"
+                max="50"
+                defaultValue={12}
+              />
+              Aromat (%) {aroma}
+              <input
+                onChange={(e) => {
+                  setAroma(e.target.value);
+                }}
                 type="range"
                 name="aroma"
-                min="0"
+                min="5"
                 max="30"
                 defaultValue={10}
               />
             </label>
-            <label className={buyForm__toggle} htmlFor="nicotineType">
+            <label className={buyForm__nicType} htmlFor="nicotineType">
               <span>Sól</span>
-              <ImArrowRight2 />
+              <div className={buyForm__toggle}>
+                <FaArrowRight
+                  style={{
+                    transform: `rotate(${rotation}deg)`,
+                    transition: "transform 0.3s",
+                  }}
+                />
+                <input
+                  type="checkbox"
+                  name="nicotineType"
+                  id="toggleCheckbox"
+                  onClick={toggleRotation}
+                />
+              </div>
+
               <span>Zasada</span>
             </label>
-            <label className={buyForm__select} htmlFor="amount">
+            <label className={buyForm__select} htmlFor="ml">
               <div>
-                <input type="radio" name="amount" value={10} />
+                <input type="radio" name="ml" value={10} defaultChecked />
                 <span>10ml</span>
               </div>
               <div>
-                <input type="radio" name="amount" value={30} />
+                <input type="radio" name="ml" value={30} />
                 <span>30ml</span>
               </div>
               <div>
-                <input type="radio" name="amount" value={60} />
+                <input type="radio" name="ml" value={60} />
                 <span>60ml</span>
               </div>
             </label>
             <div className={buyForm__priceBox}>
-              <p className={buyForm__price}>{calculatedProduct.sum} zł</p>
+              <p className={buyForm__price}>{price ? price.sum : "9,46"}</p>
               <button className={buyForm__btn} type="submit">
                 <LuShoppingCart color="#fff" size={25} />
               </button>
@@ -113,6 +163,11 @@ const SingleProduct = () => {
           </form>
         </div>
       </section>
+      <section className={aboutProduct}>
+        <h2 className={aboutProduct__title}>Opis produktu</h2>
+        <p className={aboutProduct__text}>{product.tastDescryption}</p>
+      </section>
+      <RecommendedProducts array={popularProduct} />
     </main>
   );
 };

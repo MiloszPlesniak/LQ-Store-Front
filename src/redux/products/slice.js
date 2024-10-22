@@ -1,9 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getProduct, getProductsList } from "./thunk";
+import { getProduct, getProductsList, calculateProduct } from "./thunk";
 
 const initialState = {
   productList: [],
   product: {},
+  caclulation: null,
+  price: {},
   isLoading: null,
   error: {},
 };
@@ -34,6 +36,21 @@ export const productsSlice = createSlice({
       })
       .addCase(getProduct.pending, (state, { payload }) => {
         state.isLoading = true;
+      })
+      .addCase(calculateProduct.pending, (state, { payload }) => {
+        state.isLoading = true;
+        state.caclulation = null;
+      })
+      .addCase(calculateProduct.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = payload;
+
+        state.caclulation = null;
+      })
+      .addCase(calculateProduct.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.caclulation = payload;
+        state.price = payload.priceForOneBottle;
       });
   },
 });

@@ -46,7 +46,7 @@ const SingleProduct = () => {
   //definiujemy funkcję, która będzie wywoływać funkcję onChangehandlerThrottled
   const onChangehandlerThrottledReff = async (e) => {
     await onChangehandlerThrottled.current(e);
-    console.log(price);
+    console.log(price, "price");
   };
   //pobieramy dane produktu z serwera
   useEffect(() => {
@@ -66,7 +66,6 @@ const SingleProduct = () => {
   const toggleRotation = () => {
     setRotation((prevRotation) => prevRotation + 180);
   };
-  // dodać obsugę błędów zbyt wysokiej mocy oraz braku składnika-----------------------------------
   const {
     buySection,
     buySection__img,
@@ -84,8 +83,9 @@ const SingleProduct = () => {
     aboutProduct__title,
     aboutProduct__text,
   } = styles;
+
   return (
-    <main>
+    <div>
       <section className={buySection}>
         <img
           className={buySection__img}
@@ -154,12 +154,18 @@ const SingleProduct = () => {
                 <span>60ml</span>
               </div>
             </label>
-            <div className={buyForm__priceBox}>
-              <p className={buyForm__price}>{price ? price.sum : "9,46"}</p>
-              <button className={buyForm__btn} type="submit">
-                <LuShoppingCart color="#fff" size={25} />
-              </button>
-            </div>
+            {price.priceForOneBottle ? (
+              <div className={buyForm__priceBox}>
+                <p className={buyForm__price}>
+                  {price.priceForOneBottle ? price.priceForOneBottle.sum : "-"}
+                </p>
+                <button className={buyForm__btn} type="submit">
+                  <LuShoppingCart color="#fff" size={25} />
+                </button>
+              </div>
+            ) : (
+              <p>Brak w Magazynie </p>
+            )}
           </form>
         </div>
       </section>
@@ -168,7 +174,7 @@ const SingleProduct = () => {
         <p className={aboutProduct__text}>{product.tastDescryption}</p>
       </section>
       <RecommendedProducts array={popularProduct} />
-    </main>
+    </div>
   );
 };
 

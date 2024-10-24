@@ -20,10 +20,10 @@ const Products = () => {
   }, [dispatch]);
 
   return (
-    <main>
+    <section>
       <Advertisement product={product} />
       <ProductList />
-    </main>
+    </section>
   );
 };
 export default Products;

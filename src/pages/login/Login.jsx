@@ -14,7 +14,6 @@ const Login = () => {
       email,
       password,
     };
-    console.log(formData);
     dispatch(loginUser(formData));
     return formData;
   };

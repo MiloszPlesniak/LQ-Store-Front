@@ -75,7 +75,6 @@ export const loginUser = createAsyncThunk(
       );
 
       setAuthHeader(res.data.token);
-      console.log(res);
 
       return res.data;
     } catch (error) {

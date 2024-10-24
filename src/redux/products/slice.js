@@ -50,7 +50,7 @@ export const productsSlice = createSlice({
       .addCase(calculateProduct.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.caclulation = payload;
-        state.price = payload.priceForOneBottle;
+        state.price = payload;
       });
   },
 });

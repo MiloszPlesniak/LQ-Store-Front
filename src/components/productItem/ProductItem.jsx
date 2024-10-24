@@ -9,7 +9,6 @@ const ProductItem = ({ item }) => {
     productItem__brand,
     productItem__tastName,
   } = styles;
-  // console.log(item);
   const { _id, brend, imgUrl, tastName } = item;
   const { pathname } = useLocation();
 

@@ -1,6 +1,7 @@
 import styles from "./RecommendedProducts.module.scss";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 const RecommendedProducts = ({ array }) => {
   const {
     products,
@@ -29,8 +30,6 @@ const RecommendedProducts = ({ array }) => {
       setTransform(transform - 150);
     }
   };
-  console.log(transform);
-
   return (
     <section className={products}>
       <h4>Produkty które mogą ci się spodobać:</h4>
@@ -51,13 +50,15 @@ const RecommendedProducts = ({ array }) => {
             {array.map((item) => {
               return (
                 <li className={products__item} key={item._id}>
-                  <figure className={products__box}>
-                    <img className={products__img} src={item.imgUrl} alt="" />
-                    <figcaption className={products__textBox}>
-                      <h6 className={products__brend}>{item.brend}</h6>
-                      <p className={products__tast}>{item.tastName}</p>
-                    </figcaption>
-                  </figure>
+                  <Link to={`/products/${item._id}`}>
+                    <figure className={products__box}>
+                      <img className={products__img} src={item.imgUrl} alt="" />
+                      <figcaption className={products__textBox}>
+                        <h6 className={products__brend}>{item.brend}</h6>
+                        <p className={products__tast}>{item.tastName}</p>
+                      </figcaption>
+                    </figure>
+                  </Link>
                 </li>
               );
             })}

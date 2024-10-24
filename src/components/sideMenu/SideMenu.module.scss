@@ -1,0 +1,18 @@
+.sideMenu {
+  width: 99vw;
+  height: 100vh;
+  backdrop-filter: blur(2px);
+  background-color: rgba(255, 255, 255, 0.1);
+  position: fixed;
+  top: 0px;
+  &__box {
+    position: fixed;
+    top: 0px;
+    right: -10px;
+    background-color: #fff;
+    width: 300px;
+    height: 120vh;
+    border-left: 1px solid #c4c7c8;
+    z-index: -1;
+  }
+}

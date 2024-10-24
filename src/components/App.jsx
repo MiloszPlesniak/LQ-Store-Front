@@ -9,6 +9,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { refreshUser } from "../redux/auth/thunk";
 import { selectUserId } from "../redux/auth/selectors";
 import SingleProduct from "../pages/singleProduct/SingleProduct";
+import PrivateRoute from "../helpers/PrivateRoute";
+import RestrictedRoute from "../helpers/RestrictedRoute";
+import SideMenu from "./sideMenu/SideMenu";
 function App() {
   const userId = useSelector(selectUserId);
   const dispatch = useDispatch();
@@ -23,11 +26,35 @@ function App() {
 
       <main className="App">
         <Routes>
-          <Route path="/login" element={<Login />}></Route>
-          <Route path="/register" element={<Register />}></Route>
-          <Route path="/products" element={<Products />}></Route>
-          <Route path="/products/:product" element={<SingleProduct />}></Route>
+          <Route
+            path="/login"
+            element={
+              <RestrictedRoute redirectTo="/products" component={<Login />} />
+            }
+          ></Route>
+          <Route
+            path="/register"
+            element={
+              <RestrictedRoute
+                redirectTo="/products"
+                component={<Register />}
+              />
+            }
+          ></Route>
+          <Route
+            path="/products"
+            element={
+              <PrivateRoute redirectTo="/login" component={<Products />} />
+            }
+          ></Route>
+          <Route
+            path="/products/:product"
+            element={
+              <PrivateRoute redirectTo="/login" component={<SingleProduct />} />
+            }
+          ></Route>
         </Routes>
+        {/* <SideMenu /> */}
       </main>
     </>
   );

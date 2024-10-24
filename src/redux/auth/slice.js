@@ -20,7 +20,6 @@ export const authSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(registerUser.fulfilled, (state, { payload }) => {
-        console.log(payload);
         state.isLoading = false;
         state.token = payload.token;
         state.user = payload.logedUser.message;
@@ -45,7 +44,6 @@ export const authSlice = createSlice({
       })
       .addCase(loginUser.rejected, (state, { payload }) => {
         state.isLoading = false;
-        console.log(payload);
         state.error = payload;
       })
       .addCase(logOut.pending, (state, { payload }) => {
@@ -58,6 +56,7 @@ export const authSlice = createSlice({
         state.isRefreshing = null;
         state.isLoading = false;
         state.error = {};
+        state.userId = null;
         // state = initialState;
       })
       .addCase(logOut.rejected, (state, { payload }) => {

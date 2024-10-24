@@ -21,3 +21,6 @@ code {
   list-style-type: none;
   text-decoration: none;
 }
+a {
+  color: black;
+}

@@ -11,6 +11,7 @@ export const getProductsList = createAsyncThunk(
       return productsList;
     } catch (error) {
       console.log(error);
+      throw error;
     }
   }
 );
@@ -20,7 +21,9 @@ export const getProduct = createAsyncThunk("product/getProduct", async (id) => {
     const product = await axios.get(url); // zapytanie o konkretny produkt
 
     return product;
-  } catch (error) {}
+  } catch (error) {
+    throw error;
+  }
 });
 
 export const calculateProduct = createAsyncThunk(
@@ -36,6 +39,7 @@ export const calculateProduct = createAsyncThunk(
       return response;
     } catch (error) {
       console.log(error);
+      throw error;
     }
   }
 );

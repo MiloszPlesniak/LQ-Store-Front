@@ -12,10 +12,11 @@ import SingleProduct from "../pages/singleProduct/SingleProduct";
 import PrivateRoute from "../helpers/PrivateRoute";
 import RestrictedRoute from "../helpers/RestrictedRoute";
 import SideMenu from "./sideMenu/SideMenu";
+import { selectSideMenuOpen } from "../redux/settings/selectors";
 function App() {
   const userId = useSelector(selectUserId);
   const dispatch = useDispatch();
-
+  const isSideMenuOpen = useSelector(selectSideMenuOpen);
   useEffect(() => {
     dispatch(refreshUser(userId));
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -54,7 +55,7 @@ function App() {
             }
           ></Route>
         </Routes>
-        {/* <SideMenu /> */}
+        {isSideMenuOpen && <SideMenu />}
       </main>
     </>
   );

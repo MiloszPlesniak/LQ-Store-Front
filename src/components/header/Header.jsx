@@ -4,12 +4,17 @@ import { BiSearchAlt } from "react-icons/bi";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { RiLoginBoxLine } from "react-icons/ri";
 import styles from "./header.module.scss";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { selectIsLoggedIn } from "../../redux/auth/selectors";
+import { toggleSideMenu } from "../../redux/settings/slice";
+
 const Header = () => {
   const isLoggIn = useSelector(selectIsLoggedIn);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const menuOpenHenlder = () => {
+    dispatch(toggleSideMenu());
+  };
   return (
     <header className={styles.header}>
       <img src={logoSvg} alt="Logo" className={styles.header__logo} />
@@ -18,7 +23,10 @@ const Header = () => {
         {isLoggIn ? (
           <div>
             <BiSearchAlt className={styles.header__icon} />
-            <GiHamburgerMenu className={styles.header__icon} />
+            <GiHamburgerMenu
+              onClick={menuOpenHenlder}
+              className={styles.header__icon}
+            />
           </div>
         ) : (
           <RiLoginBoxLine

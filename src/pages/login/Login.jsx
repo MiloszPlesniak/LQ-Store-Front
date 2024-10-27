@@ -8,7 +8,7 @@ const Login = () => {
   const loginHandler = (e) => {
     e.preventDefault();
     const form = e.currentTarget;
-    const email = form.elements.email.value;
+    const email = form.elements.email.value.toLowerCase();
     const password = form.elements.password.value;
     const formData = {
       email,

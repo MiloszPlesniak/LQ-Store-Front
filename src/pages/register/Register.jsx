@@ -7,7 +7,7 @@ const Register = () => {
   const collectFormData = (e) => {
     e.preventDefault();
     const form = e.currentTarget;
-    const email = form.elements.email.value;
+    const email = form.elements.email.value.toLowerCase();
     const password = form.elements.password.value;
     const phoneNumber = form.elements.phoneNumber.value;
     const formData = { email, password, phoneNumber };

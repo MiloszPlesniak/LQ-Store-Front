@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-const initialState = { sideMenuOpen: false };
+const initialState = { sideMenuOpen: true };
 
 export const settingsSlice = createSlice({
   name: "settings",

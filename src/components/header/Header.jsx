@@ -1,4 +1,5 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
 import logoSvg from "../../image/logo.svg";
 import { BiSearchAlt } from "react-icons/bi";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -17,8 +18,9 @@ const Header = () => {
   };
   return (
     <header className={styles.header}>
-      <img src={logoSvg} alt="Logo" className={styles.header__logo} />
-      {/* <nav className={styles.header__navigation}>d</nav> */}
+      <Link to="/">
+        <img src={logoSvg} alt="Logo" className={styles.header__logo} />
+      </Link>
       <div className={styles.header__iconContainer}>
         {isLoggIn ? (
           <div>

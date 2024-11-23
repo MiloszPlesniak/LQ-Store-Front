@@ -1,5 +1,5 @@
 .sideMenu {
-  width: 99vw;
+  width: 100vw;
   height: 100vh;
   backdrop-filter: blur(2px);
   background-color: rgba(255, 255, 255, 0.1);
@@ -8,10 +8,11 @@
   &__box {
     position: fixed;
     top: 0px;
-    right: -10px;
+    right: 0px;
+    padding-right: 10px;
     background-color: #fff;
     width: 300px;
-    height: 120vh;
+    height: 100vh;
     border-left: 1px solid #c4c7c8;
     z-index: -1;
   }
@@ -46,15 +47,11 @@
     justify-content: space-between;
     align-items: center;
 
-    
-
     &:hover {
       background-color: #43e182;
       color: #fff;
       cursor: pointer;
-      
     }
-    
   }
   &__logOutBtn {
     border: none;
@@ -63,7 +60,7 @@
     font-size: 25px;
     cursor: pointer;
     position: absolute;
-    bottom: 22vh;
+    bottom: 2vh;
     left: 50%;
     transform: translateX(-50%);
 
@@ -72,4 +69,3 @@
     }
   }
 }
-

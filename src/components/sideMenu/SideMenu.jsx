@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
-import styles from "./SideMenu.module.scss";
 import { selectUser, selectUserId } from "../../redux/auth/selectors";
+import { Link } from "react-router-dom";
+import styles from "./SideMenu.module.scss";
 import { logOut } from "../../redux/auth/thunk";
 import { IoIosArrowForward } from "react-icons/io";
 import { toggleSideMenu } from "../../redux/settings/slice";
@@ -15,6 +16,7 @@ const SideMenu = () => {
     sideMenu__logOutBtn,
     sideMenu__menuCloseBtn,
   } = styles;
+
   const dispatch = useDispatch();
   const userId = useSelector(selectUserId);
   const nickname = useSelector(selectUser).alias;
@@ -22,6 +24,10 @@ const SideMenu = () => {
     dispatch(logOut(userId));
   };
   const closeMenuHandler = (e) => {
+    e.stopPropagation();
+    if (e.target.tagName === "A") {
+      dispatch(toggleSideMenu());
+    }
     if (e.target === e.currentTarget) {
       dispatch(toggleSideMenu());
     }
@@ -36,24 +42,26 @@ const SideMenu = () => {
           </button>
         </div>
 
-        <ul className={sideMenu__list}>
+        <ul onClick={closeMenuHandler} className={sideMenu__list}>
           <li className={sideMenu__item}>
-            <p>Twoje Konto</p> <IoIosArrowForward />
+            <Link to={"/account/user"}>Twoje Konto</Link> <IoIosArrowForward />
           </li>
           <li className={sideMenu__item}>
-            <p>Zamówienia</p> <IoIosArrowForward />
+            <Link to={"/account/orders"}>Zamówienia</Link> <IoIosArrowForward />
           </li>
           <li className={sideMenu__item}>
-            <p>Dane klienta</p> <IoIosArrowForward />
+            <Link to={"/account/user"}>Dane klienta</Link> <IoIosArrowForward />
           </li>
           <li className={sideMenu__item}>
-            <p>Preferencje</p> <IoIosArrowForward />
+            <Link to={"/account/preferences"}>Preferencje</Link>
+            <IoIosArrowForward />
           </li>
           <li className={sideMenu__item}>
-            <p>FAQ</p> <IoIosArrowForward />
+            <Link to={"/account/faq"}>FAQ</Link> <IoIosArrowForward />
           </li>
           <li className={sideMenu__item}>
-            <p>Koszyk</p> <IoIosArrowForward />
+            <Link to={"/account/shopingCart"}>Koszyk</Link>{" "}
+            <IoIosArrowForward />
           </li>
         </ul>
         <button

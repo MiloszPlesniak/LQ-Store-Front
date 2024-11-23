@@ -7,6 +7,7 @@ import { LuShoppingCart } from "react-icons/lu";
 import { FaArrowRight } from "react-icons/fa";
 import { getProduct, getProductsList } from "../../redux/products/thunk";
 import { calculateProduct } from "../../redux/products/thunk";
+import { addToCart } from "../../redux/orders/slice";
 import {
   selectProduct,
   selectPrice,
@@ -34,6 +35,7 @@ const SingleProduct = () => {
       power: e.target.form.power.value,
       amount: 1,
       nicotineType: e.target.form.nicotineType.checked ? "zasada" : "sól",
+      dosage: e.target.form.aroma.value,
     };
     try {
       dispatch(calculateProduct(ingr));
@@ -46,7 +48,6 @@ const SingleProduct = () => {
   //definiujemy funkcję, która będzie wywoływać funkcję onChangehandlerThrottled
   const onChangehandlerThrottledReff = async (e) => {
     await onChangehandlerThrottled.current(e);
-    console.log(price, "price");
   };
   //pobieramy dane produktu z serwera
   useEffect(() => {
@@ -59,6 +60,7 @@ const SingleProduct = () => {
         power: 12,
         amount: 1,
         nicotineType: "sól",
+        dosage: 10,
       })
     );
   }, [dispatch, productId]);
@@ -83,7 +85,25 @@ const SingleProduct = () => {
     aboutProduct__title,
     aboutProduct__text,
   } = styles;
+  const submitHandler = (e) => {
+    e.preventDefault();
+    console.log("dodano do koszyka");
+    const item = {
+      img: product.imgUrl,
+      tastName: product.tastName,
+      brend: product.brend,
+      id: productId,
+      key: Math.random(),
+      amount: 1,
+      power: power,
+      size: e.target.ml.value,
+      dosage: e.target.aroma.value,
+      price: price.priceForOneBottle.sum,
+    };
+    console.log(item);
 
+    dispatch(addToCart(item));
+  };
   return (
     <div>
       <section className={buySection}>
@@ -96,7 +116,11 @@ const SingleProduct = () => {
         <div>
           <h4 className={buySection__brend}>{product.brend}</h4>
           <h5 className={buySection__tastName}>{product.tastName}</h5>
-          <form onChange={onChangehandlerThrottledReff} className={buyForm}>
+          <form
+            onSubmit={submitHandler}
+            onChange={onChangehandlerThrottledReff}
+            className={buyForm}
+          >
             <label className={buyForm__range} htmlFor="power">
               Moc (mg) {power}
               <input
@@ -118,7 +142,7 @@ const SingleProduct = () => {
                 name="aroma"
                 min="5"
                 max="30"
-                defaultValue={10}
+                defaultValue={product.dosage}
               />
             </label>
             <label className={buyForm__nicType} htmlFor="nicotineType">

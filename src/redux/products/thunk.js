@@ -29,6 +29,8 @@ export const getProduct = createAsyncThunk("product/getProduct", async (id) => {
 export const calculateProduct = createAsyncThunk(
   "product/calculateProduct",
   async (product) => {
+    console.log(product);
+
     try {
       const data = await axios.post(
         "http://localhost:3100/api/products/calculate",

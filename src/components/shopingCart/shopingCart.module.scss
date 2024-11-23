@@ -1,0 +1,49 @@
+.shopingCart {
+  width: 90%;
+  margin: 0px auto;
+  font-size: 14px;
+  &__list {
+    margin-top: 30px;
+  }
+  &__item {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 10px;
+    grid-row-gap: 10px;
+    align-items: center;
+    justify-items: center;
+    padding: 10px 10px;
+    border: 1px solid #c4c7c8;
+    border-radius: 10px;
+    margin: 10px 0px;
+
+    & > p {
+      text-align: center;
+    }
+    & > img {
+      height: 100px;
+    }
+  }
+  &__btn {
+    background-color: transparent;
+    position: absolute;
+    border: none;
+    bottom: 0px;
+    right: 15px;
+    cursor: pointer;
+    &:hover {
+      background-color: #c61d1d84;
+      border-radius: 10%;
+      & > svg {
+        fill: #fff;
+      }
+    }
+    & > svg {
+      width: 25px;
+      height: 25px;
+      fill: #9ea1a2;
+    }
+  }
+}

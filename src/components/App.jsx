@@ -12,6 +12,9 @@ import SingleProduct from "../pages/singleProduct/SingleProduct";
 import PrivateRoute from "../helpers/PrivateRoute";
 import RestrictedRoute from "../helpers/RestrictedRoute";
 import SideMenu from "./sideMenu/SideMenu";
+import AccountPage from "../pages/accountPage/AccountPage";
+import UserData from "./userData/UserData";
+import ShopingCart from "./shopingCart/ShopingCart";
 import { selectSideMenuOpen } from "../redux/settings/selectors";
 function App() {
   const userId = useSelector(selectUserId);
@@ -23,10 +26,16 @@ function App() {
   }, [dispatch]);
   return (
     <>
-      <Navigation></Navigation>
+      <Navigation />
 
       <main className="App">
         <Routes>
+          <Route
+            path="/"
+            element={
+              <RestrictedRoute redirectTo="/products" component={<Login />} />
+            }
+          ></Route>
           <Route
             path="/login"
             element={
@@ -54,6 +63,18 @@ function App() {
               <PrivateRoute redirectTo="/login" component={<SingleProduct />} />
             }
           ></Route>
+          <Route
+            path="/account"
+            element={
+              <PrivateRoute redirectTo="/login" component={<AccountPage />} />
+            }
+          >
+            <Route path="user" element={<UserData />}></Route>
+            <Route path="orders" element={<h1>Orders</h1>}></Route>
+            <Route path="preferences" element={<h1>Preferences</h1>}></Route>
+            <Route path="faq" element={<h1>FAQ</h1>}></Route>
+            <Route path="shopingCart" element={<ShopingCart />}></Route>
+          </Route>
         </Routes>
         {isSideMenuOpen && <SideMenu />}
       </main>

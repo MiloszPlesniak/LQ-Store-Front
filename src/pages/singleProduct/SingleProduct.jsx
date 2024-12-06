@@ -12,17 +12,19 @@ import {
   selectProduct,
   selectPrice,
   selectProductList,
+  selectIsLoading,
 } from "../../redux/products/selectors";
 import RecommendedProducts from "../../components/recommendedProducts/RecommendedProducts";
 const SingleProduct = () => {
+  const product = useSelector(selectProduct);
   const { pathname } = useLocation();
   const productId = pathname.replace("/products/", "");
   const [power, setPower] = useState(12);
-  const [aroma, setAroma] = useState(10);
+  const [aroma, setAroma] = useState(Number(product.dosage));
   const [rotation, setRotation] = useState(-180);
   const dispatch = useDispatch();
   const price = useSelector(selectPrice);
-  const product = useSelector(selectProduct);
+  const isLoading = useSelector(selectIsLoading);
   const productList = useSelector(selectProductList);
 
   const popularProduct = productList.filter((item) => item.popularity); //filtrujemy produkty, które są popularne
@@ -51,6 +53,7 @@ const SingleProduct = () => {
   };
   //pobieramy dane produktu z serwera
   useEffect(() => {
+    setAroma(Number(product.dosage));
     dispatch(getProductsList());
     dispatch(getProduct(productId));
     dispatch(
@@ -60,10 +63,10 @@ const SingleProduct = () => {
         power: 12,
         amount: 1,
         nicotineType: "sól",
-        dosage: 10,
+        dosage: Number(product.dosage),
       })
     );
-  }, [dispatch, productId]);
+  }, [dispatch, product.dosage, productId]);
 
   const toggleRotation = () => {
     setRotation((prevRotation) => prevRotation + 180);
@@ -87,7 +90,6 @@ const SingleProduct = () => {
   } = styles;
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log("dodano do koszyka");
     const item = {
       img: product.imgUrl,
       tastName: product.tastName,
@@ -99,11 +101,14 @@ const SingleProduct = () => {
       size: e.target.ml.value,
       dosage: e.target.aroma.value,
       price: price.priceForOneBottle.sum,
+      nicotineType: e.target.nicotineType.checked ? "zasada" : "sól",
     };
     console.log(item);
 
     dispatch(addToCart(item));
   };
+  console.log(Number(product.dosage));
+
   return (
     <div>
       <section className={buySection}>
@@ -142,7 +147,7 @@ const SingleProduct = () => {
                 name="aroma"
                 min="5"
                 max="30"
-                defaultValue={product.dosage}
+                defaultValue={Number(product.dosage)}
               />
             </label>
             <label className={buyForm__nicType} htmlFor="nicotineType">
@@ -183,7 +188,11 @@ const SingleProduct = () => {
                 <p className={buyForm__price}>
                   {price.priceForOneBottle ? price.priceForOneBottle.sum : "-"}
                 </p>
-                <button className={buyForm__btn} type="submit">
+                <button
+                  disabled={isLoading ? true : false}
+                  className={buyForm__btn}
+                  type="submit"
+                >
                   <LuShoppingCart color="#fff" size={25} />
                 </button>
               </div>

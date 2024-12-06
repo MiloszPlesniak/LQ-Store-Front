@@ -25,6 +25,9 @@
     & > img {
       height: 100px;
     }
+    & > a:hover {
+      color: #457045;
+    }
   }
   &__btn {
     background-color: transparent;
@@ -44,6 +47,61 @@
       width: 25px;
       height: 25px;
       fill: #9ea1a2;
+    }
+  }
+  &__form {
+    font-size: 18px;
+    &>button{
+      width: 150px;
+      height: 50px;
+      background-color: #457045;
+      color: #fff;
+      font-size: 22px;
+      border: none;
+      border-radius: 50px;
+      margin-bottom: 40px;
+      cursor: pointer;
+    }
+    & > p {
+      font-size: 26px;
+      margin-top: 15px;
+      text-align: right;
+    }
+    & > div {
+      display: flex;
+      justify-content: space-between;
+      & > input[type="radio"] {
+        border: 0 !important;
+        clip: rect(1px, 1px, 1px, 1px);
+        height: 1px !important;
+        overflow: hidden;
+        padding: 0 !important;
+        position: absolute !important;
+        width: 1px !important;
+        &:checked + label::before {
+          background-position: 0px 5px;
+          background: url(../../image/check.png);
+          background-size: cover;
+          width: 25px;
+          height: 30px;
+          // border: none;
+        }
+      }
+      & > label {
+        display: inline-flex;
+        align-items: center;
+        margin-bottom: 10px;
+        
+
+        &::before {
+          content: "";
+          display: block;
+          height: 30px;
+          width: 25px;
+          margin-right: 5px;
+          border: 2px solid #2b47d1;
+        }
+      }
     }
   }
 }

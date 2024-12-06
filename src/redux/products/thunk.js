@@ -3,7 +3,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const getProductsList = createAsyncThunk(
   "product/getProductsList",
-  async (_, thunkAPI) => {
+  async () => {
     try {
       const productsList = await axios.get(
         "http://localhost:3100/api/products/"

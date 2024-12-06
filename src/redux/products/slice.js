@@ -6,7 +6,6 @@ const initialState = {
   product: {},
   caclulation: null,
   price: {},
-
   isLoading: null,
   error: {},
 };

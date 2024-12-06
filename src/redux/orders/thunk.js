@@ -15,3 +15,18 @@ export const getOrdersList = createAsyncThunk(
     }
   }
 );
+export const addOrder = createAsyncThunk(
+  "orders/addOrder",
+  async (orderList) => {
+    try {
+      const order = await axios.post(
+        "http://localhost:3100/api/orders/",
+        orderList
+      );
+      return order;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+);

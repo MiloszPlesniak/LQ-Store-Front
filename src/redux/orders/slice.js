@@ -1,7 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-
+import { addOrder, getOrdersList } from "./thunk";
 const initialState = {
-  shopingCart: [],
+  shopingCartList: [],
+  orders: [],
+  error: null,
+  isLoading: false,
+  orderList: [],
 };
 
 export const ordersSlice = createSlice({
@@ -9,17 +13,37 @@ export const ordersSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, { payload }) => {
-      state.shopingCart.push(payload);
+      state.shopingCartList.push(payload);
     },
     deleteFromCart: (state, { payload }) => {
-      state.shopingCart = state.shopingCart.filter(
-        (product) => product.id !== payload.id
-      );
+      const arr = state.shopingCartList;
+      arr.splice(payload, 1);
+      state.shopingCartList = arr;
     },
     clearCart: (state) => {
-      state.shopingCart = [];
+      state.shopingCartList = [];
     },
   },
-});
+  extraReducers: (builder) => {
+    builder
+    .addCase(addOrder.pending, (state) => {
+      state.isLoading = true;
+    }).addCase(addOrder.fulfilled, (state) => {
+    state.isLoading = false;
+    state.error = null;
+  }).addCase(addOrder.rejected, (state, { payload }) => {
+    state.isLoading = false;
+    state.error = payload;
+  }).addCase(getOrdersList.pending, (state) => {
+    state.isLoading = true;
+  }).addCase(getOrdersList.fulfilled, (state, { payload }) => {
+    state.isLoading = false;
+    state.orders = payload;
+    state.error = null;
+  }).addCase(getOrdersList.rejected, (state, { payload }) => {
+    state.isLoading = false;
+    state.error = payload;
+  });
+  },})
 export const { addToCart, deleteFromCart, clearCart } = ordersSlice.actions;
 export default ordersSlice.reducer;

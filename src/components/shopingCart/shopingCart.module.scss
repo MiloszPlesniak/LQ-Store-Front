@@ -8,7 +8,7 @@
   &__item {
     position: relative;
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(7, 1fr);
     grid-template-rows: 1fr;
     grid-column-gap: 10px;
     grid-row-gap: 10px;
@@ -51,7 +51,24 @@
   }
   &__form {
     font-size: 18px;
-    &>button{
+    position: relative;
+    & > input[type="text"] {
+      width: 150px;
+      height: 40px;
+      position: relative;
+      top: 0px;
+      left: -50%;
+      transform: translateX(50%);
+      text-align: center;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 14px;
+      border-radius: 5%;
+      border: 2px solid #457045;
+      font-weight: bold;
+     
+
+    }
+    & > button {
       width: 150px;
       height: 50px;
       background-color: #457045;
@@ -70,6 +87,8 @@
     & > div {
       display: flex;
       justify-content: space-between;
+      
+    
       & > input[type="radio"] {
         border: 0 !important;
         clip: rect(1px, 1px, 1px, 1px);
@@ -91,7 +110,6 @@
         display: inline-flex;
         align-items: center;
         margin-bottom: 10px;
-        
 
         &::before {
           content: "";

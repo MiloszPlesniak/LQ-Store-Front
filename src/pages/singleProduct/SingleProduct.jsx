@@ -1,10 +1,11 @@
 import { useLocation } from "react-router-dom";
-import { throttle } from "lodash";
+import { set, throttle } from "lodash";
+import clsx from "clsx";
 import styles from "./SingleProduct.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
 import { LuShoppingCart } from "react-icons/lu";
-import { FaArrowRight } from "react-icons/fa";
+import { FaArrowRight, FaCheck } from "react-icons/fa";
 import { getProduct, getProductsList } from "../../redux/products/thunk";
 import { calculateProduct } from "../../redux/products/thunk";
 import { addToCart } from "../../redux/orders/slice";
@@ -16,12 +17,31 @@ import {
 } from "../../redux/products/selectors";
 import RecommendedProducts from "../../components/recommendedProducts/RecommendedProducts";
 const SingleProduct = () => {
+  const {
+    buySection,
+    buySection__img,
+    buyForm__price,
+    buySection__tastName,
+    buySection__brend,
+    buyForm,
+    buyForm__range,
+    buyForm__select,
+    buyForm__priceBox,
+    buyForm__btn,
+    buyForm__buy,
+    buyForm__toggle,
+    buyForm__nicType,
+    aboutProduct,
+    aboutProduct__title,
+    aboutProduct__text,
+  } = styles;
   const product = useSelector(selectProduct);
   const { pathname } = useLocation();
   const productId = pathname.replace("/products/", "");
   const [power, setPower] = useState(12);
   const [aroma, setAroma] = useState(Number(product.dosage));
   const [rotation, setRotation] = useState(-180);
+  const [buyAnimation,setBuyAnimation]=useState(false);
   const dispatch = useDispatch();
   const price = useSelector(selectPrice);
   const isLoading = useSelector(selectIsLoading);
@@ -71,24 +91,10 @@ const SingleProduct = () => {
   const toggleRotation = () => {
     setRotation((prevRotation) => prevRotation + 180);
   };
-  const {
-    buySection,
-    buySection__img,
-    buyForm__price,
-    buySection__tastName,
-    buySection__brend,
-    buyForm,
-    buyForm__range,
-    buyForm__select,
-    buyForm__priceBox,
-    buyForm__btn,
-    buyForm__toggle,
-    buyForm__nicType,
-    aboutProduct,
-    aboutProduct__title,
-    aboutProduct__text,
-  } = styles;
+
+  
   const submitHandler = (e) => {
+    
     e.preventDefault();
     const item = {
       img: product.imgUrl,
@@ -99,15 +105,20 @@ const SingleProduct = () => {
       amount: 1,
       power: power,
       size: e.target.ml.value,
-      dosage: e.target.aroma.value,
+      dosage: aroma,
       price: price.priceForOneBottle.sum,
       nicotineType: e.target.nicotineType.checked ? "zasada" : "sól",
     };
     console.log(item);
-
+    
+    console.log(buyAnimation);
+    
     dispatch(addToCart(item));
+   
+    setBuyAnimation(true)
+    setTimeout(() => {setBuyAnimation(false)}, 1600);
   };
-  console.log(Number(product.dosage));
+  console.log(Number(product.dosage), "product.dosage", Number(aroma), "aroma");
 
   return (
     <div>
@@ -147,7 +158,7 @@ const SingleProduct = () => {
                 name="aroma"
                 min="5"
                 max="30"
-                defaultValue={Number(product.dosage)}
+                defaultValue={aroma}
               />
             </label>
             <label className={buyForm__nicType} htmlFor="nicotineType">
@@ -194,6 +205,9 @@ const SingleProduct = () => {
                   type="submit"
                 >
                   <LuShoppingCart color="#fff" size={25} />
+                  <div className={clsx(buyForm__btn,buyAnimation&&buyForm__buy)} >
+                    <FaCheck color="#fff" size={25} />
+                  </div>
                 </button>
               </div>
             ) : (

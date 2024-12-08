@@ -148,12 +148,41 @@
     height: 40px;
     border-radius: 40%;
     cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    & > div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #50be50;
+      position: absolute;
+      top: 0px;
+      left: 45px;
+    }
   }
+  &__buy {
+    animation: buyAnimation 1.5s linear;
+  }
+  
   &_svg {
     width: 40px;
   }
   &__price {
     font-size: 28px;
+  }
+}
+@keyframes buyAnimation {
+  0% {
+    transform: translateX(0px);
+  }
+  40% {
+    transform: translateX(-45px);
+  }
+  60% {
+    transform: translateX(-45px);
+  }
+  100% {
+    transform: translateX(-90px);
   }
 }
 .aboutProduct {

@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { set, throttle } from "lodash";
+import { throttle } from "lodash";
 import clsx from "clsx";
 import styles from "./SingleProduct.module.scss";
 import { useDispatch, useSelector } from "react-redux";
@@ -109,16 +109,16 @@ const SingleProduct = () => {
       price: price.priceForOneBottle.sum,
       nicotineType: e.target.nicotineType.checked ? "zasada" : "sól",
     };
-    console.log(item);
     
-    console.log(buyAnimation);
+    
+    
     
     dispatch(addToCart(item));
    
     setBuyAnimation(true)
     setTimeout(() => {setBuyAnimation(false)}, 1600);
   };
-  console.log(Number(product.dosage), "product.dosage", Number(aroma), "aroma");
+  
 
   return (
     <div>

@@ -4,8 +4,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { useState } from "react";
 import { selectShopingCartList } from "../../redux/orders/selectors";
 import { RiDeleteBinLine } from "react-icons/ri";
-import { deleteFromCart,clearCart } from "../../redux/orders/slice";
+import { deleteFromCart, clearCart } from "../../redux/orders/slice";
 import { addOrder } from "../../redux/orders/thunk";
+import BuyScreen from "../buyScreen/BuyScreen";
 const ShopingCart = () => {
   const {
     shopingCart,
@@ -15,14 +16,15 @@ const ShopingCart = () => {
     shopingCart__form,
   } = styles;
   const [delivery, setDelivery] = useState(false);
+  const [overlay, setOverlay] = useState(false);
   const dispatch = useDispatch();
   const shopingCartList = useSelector(selectShopingCartList);
-  console.log(shopingCartList);
+
   const handleDelete = (id) => {
     //funkcja, która usuwa produkt z koszyka
     dispatch(deleteFromCart(id));
   };
-  console.log(shopingCartList.length);
+
 
   const sum = shopingCartList
     .map((item) => item.price)
@@ -31,7 +33,6 @@ const ShopingCart = () => {
       return sum;
     }, 0);
   const fixedSum = Number(sum.toFixed(2));
-  
 
   const placeOrderHandle = async (e) => {
     e.preventDefault();
@@ -45,13 +46,19 @@ const ShopingCart = () => {
         nicotineType: item.nicotineType,
       };
     });
-    console.log(e.target.delivery[1]);
     
+
     const comment = delivery ? fixedSum + 19.9 : fixedSum;
-    const orderList = { order, comment:comment.toString()+" "+e.target.delivery[1].value };
+
+    const orderList = {
+      order,
+      comment: delivery
+        ? comment.toString() + " " + e.target.delivery[1].value
+        : comment.toString(),
+    };
     dispatch(addOrder(orderList));
+    setOverlay(true);
     dispatch(clearCart());
-    
   };
   return (
     <section className={shopingCart}>
@@ -69,7 +76,7 @@ const ShopingCart = () => {
               <p>cena</p>
             </li>
             {shopingCartList.map((item, i) => {
-             
+              
 
               return (
                 <li className={shopingCart__item} key={i}>
@@ -80,8 +87,8 @@ const ShopingCart = () => {
                   </Link>
                   <span>{item.power}</span>
                   <span>{item.size}</span>
-                  <span>{item.amount}</span>
                   <span>{item.dosage}</span>
+                  <span>{item.amount}</span>
                   <span>{item.price}</span>
                   <button
                     className={shopingCart__btn}
@@ -118,7 +125,14 @@ const ShopingCart = () => {
               />
               <label htmlFor="personalCollect">Odbiór osobisty</label>
             </div>
-              {delivery && (<input name="delivery" required placeholder="Numer Paczkomatu" type="text" />)}
+            {delivery && (
+              <input
+                name="delivery"
+                required
+                placeholder="Numer Paczkomatu"
+                type="text"
+              />
+            )}
             <div>
               <span>Wartośc:</span>
               <span>{fixedSum}</span>
@@ -129,7 +143,7 @@ const ShopingCart = () => {
                 <span>19.90zł</span>
               </div>
             )}
-            
+
             <p>Suma {delivery ? (fixedSum + 19.9).toFixed(2) : fixedSum} </p>
             <button type="submit">Zamów</button>
           </form>
@@ -137,6 +151,7 @@ const ShopingCart = () => {
       ) : (
         <h2>Twój koszyk jest pusty</h2>
       )}
+      {overlay && <BuyScreen />}
     </section>
   );
 };

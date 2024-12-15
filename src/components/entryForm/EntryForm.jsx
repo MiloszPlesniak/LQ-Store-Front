@@ -1,5 +1,7 @@
 import styles from "./EntryForm.module.scss";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectError } from "../../redux/auth/selectors";
 const EntryForm = ({ itsLogin, onSubmit }) => {
   const navigation = useNavigate();
   const {
@@ -12,6 +14,7 @@ const EntryForm = ({ itsLogin, onSubmit }) => {
     entryForm__links,
   } = styles;
 
+  const error = useSelector(selectError);
   return (
     <section className={styles.entryForm}>
       <h2 className={entryForm__title}>
@@ -48,6 +51,7 @@ const EntryForm = ({ itsLogin, onSubmit }) => {
             />
           </>
         )}
+        {error && <p>{typeof error=="string"?error:error.message}</p>}
         <button className={entryForm__button} type="submit">
           {itsLogin ? "Zaloguj" : "Zarejestruj"}
         </button>

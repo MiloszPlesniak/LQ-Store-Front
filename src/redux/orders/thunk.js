@@ -6,7 +6,7 @@ export const getOrdersList = createAsyncThunk(
   async () => {
     try {
       const ordersList = await axios.get("http://localhost:3100/api/orders/");
-      console.log(ordersList);
+      
 
       return ordersList;
     } catch (error) {

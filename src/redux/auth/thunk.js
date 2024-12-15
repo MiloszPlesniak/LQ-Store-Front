@@ -39,31 +39,14 @@ export const registerUser = createAsyncThunk(
       if (error.response.status === 409) {
         return thunkAPI.rejectWithValue("Email is already in use");
       }
+      if (error.response.status === 400) {
+        return thunkAPI.rejectWithValue(error.response.data.message);
+      }
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
-//register acount i data base and semi time return user data to login on front site
-// {
-//     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjVhNzk3MThhZmVkZTkyOTc3ZDkzYyIsImlhdCI6MTcyNzM3NTI1NX0.fwz13KtA7mrlPhBilwJZD--v9F43AbezlYbto5H_8U8",
-//     "logedUser": {
-//         "code": 200,
-//         "message": {
-//             "_id": "iduser",
-//             "email": "emailUser",
-//             "phoneNumber": --,
-//             "password": "hashedPasword",
-//             "visitation": arrey of visitation,
-//             "historyOfShoping": array of shoping history,
-//             "accountCreate": "26.09.2024, 20:18:37",
-//             "accountType": "rang",
-//             "moneySpend": moneyspend,
-//             "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IjpXVCJ9.eyJpZCI6IjY2ZjVhNzk3MThhZmVkZTkyOTc3ZDkzYyIsImlhdCI6MTcyNzM3NTI1NX0.fwz13KtA7mrlPhBilwJZD--v9F43AbezlYbto5H_8U8",
-//             "alias": "nickName",
-//             "__v": 0
-//         }
-//     }
-// }
+
 
 export const loginUser = createAsyncThunk(
   "auth/login",
@@ -80,9 +63,9 @@ export const loginUser = createAsyncThunk(
     } catch (error) {
       console.log(error);
       if (error.response.status === 400) {
-        return thunkAPI.rejectWithValue("Validation error");
+        return thunkAPI.rejectWithValue("Incorrect email or password");
       }
-      if (error.response.status === 403) {
+      if (error.response.status === 401) {
         return thunkAPI.rejectWithValue("Incorrect email or password");
       }
       if (error.response.status === 404) {
@@ -110,7 +93,7 @@ export const refreshUser = createAsyncThunk(
   "auth/refresh",
   async (userId, thunkAPI) => {
     const state = thunkAPI.getState();
-    const persistedToken = state.auth.token; //ściezka do zmiany
+    const persistedToken = state.auth.token; 
     if (persistedToken === null) {
       return thunkAPI.rejectWithValue("Unable to fetch user, no token");
     }

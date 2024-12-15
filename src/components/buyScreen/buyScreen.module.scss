@@ -1,0 +1,43 @@
+.buyScreen {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  border: 4px solid #000000;
+  border-radius: 100%;
+  margin: 30vh auto;
+  & > svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    fill: #457045;
+  }
+  & > p {
+    font-size: 20px;
+    position: absolute;
+    bottom: -60px;
+  }
+}
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #fff;
+  animation: show 2s ;
+  animation-fill-mode: forwards;
+  
+}
+@keyframes show {
+    0%{
+        opacity: 0;
+    }
+    50%{
+        opacity: 0.8;
+    }
+    100%{
+        opacity: 0;
+        display: none;
+    }
+}

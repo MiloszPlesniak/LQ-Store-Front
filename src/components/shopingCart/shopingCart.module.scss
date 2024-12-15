@@ -122,4 +122,17 @@
       }
     }
   }
+  &__buyScrean{
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background-color: #2b47d1;
+    &>svg {
+      width: 100px;
+      display: block;
+      margin: 40px auto 0;
+    }
+  }
 }
